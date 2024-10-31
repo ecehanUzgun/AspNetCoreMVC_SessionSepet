@@ -1,0 +1,38 @@
+﻿@model List<AspNetCoreMVC_Sepet.Models.Context.Product>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="col-md-12">
+    @if (TempData["SuccessStatus"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessStatus"]
+        </div>
+    }
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Product Name</th>
+                <th>UnitPrice</th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ProductId</td>
+                    <td>@item.ProductName</td>
+                    <td>@item.UnitPrice</td>
+                    <td>
+                        <a asp-action="AddToCart" asp-controller="Home" asp-route-id="@item.ProductId" class="btn btn-primary">AddToCart</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
