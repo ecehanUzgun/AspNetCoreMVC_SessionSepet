@@ -105,7 +105,45 @@ namespace AspNetCoreMVC_Sepet.Controllers
             return RedirectToAction("MyCart");
         }
 
+        public IActionResult CompleteOrder()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        public IActionResult CompleteOrder(Order order)
+        {
+            order.EmployeeId = 1;
+            order.CustomerId = "ALFKI";
+
+            var cartSession = SessionHelper.GetProductFromJson<CartSession>(HttpContext.Session, "sepet");
+
+            if (cartSession != null) 
+            {
+                foreach (var item in cartSession.MyCart)
+                {
+                    var orderDetail = new OrderDetail
+                    {
+                        ProductId = item.Value.Product.ProductId,
+                        Quantity = (short)item.Value.Quantity,
+                        UnitPrice = (decimal)item.Value.Product.UnitPrice
+                    };
+                    order.OrderDetails.Add(orderDetail);
+                }
+
+                _context.Orders.Add(order);
+                _context.SaveChanges();
+
+                HttpContext.Session.Remove("sepet");
+                TempData["SuccessStatus"] = "Sipariş başarıyla tamamlandı!";
+            }
+            else
+            {
+                TempData["ErrorStatus"] = "Sepetiniz boş";
+            }
+
+            return RedirectToAction("Index");
+        }
 
         public IActionResult Privacy()
         {

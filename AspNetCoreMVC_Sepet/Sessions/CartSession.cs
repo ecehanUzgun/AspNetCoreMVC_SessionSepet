@@ -35,7 +35,7 @@ namespace AspNetCoreMVC_Sepet.Sessions
             { 
                 if (MyCart.ContainsKey(item.Key) && item.Value > 0)
                 {
-                    MyCart[item.Key].Quantity = item.Value;
+                    MyCart[item.Key].Quantity = item.Value; // Value = Quantity
                 }
             }
         }
